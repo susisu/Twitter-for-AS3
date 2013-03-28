@@ -2,6 +2,7 @@ Twitter-for-AS3
 ===============
 
 TwitterAPIをActionScript3で叩くための何かです。
+[サーモンとアボカ丼bot](https://twitter.com/salmon_avocadon)で使われています。
 
 #注意
 * 非公式です。Twitter社にこれについて問い合わせるなどしないでください。
