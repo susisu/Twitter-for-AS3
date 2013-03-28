@@ -5,7 +5,7 @@ TwitterAPIをActionScript3で叩くための何かです。
 
 #注意
 * 非公式です。Twitter社にこれについて問い合わせるなどしないでください。
-* 別途as3crypto(http://code.google.com/p/as3crypto/)を使用可能にしておいて下さい。
+* 別途[as3crypto](http://code.google.com/p/as3crypto/)を使用可能にしておいて下さい。
 
 #使い方
 1.
@@ -48,4 +48,4 @@ access token及びaccess token secretが予め取得できている場合、最�
 
 7.
 実装状況は/api/TwitterURL.asの中身を見て察しましょう  
-細かい部分はhttps://dev.twitter.com/docs/api/1.1とTwitter.asや/api内のファイルを見比べながら適当にやってください
+細かい部分は https://dev.twitter.com/docs/api/1.1 とTwitter.asや/api内のファイルを見比べながら適当にやってください
