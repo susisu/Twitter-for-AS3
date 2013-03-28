@@ -5,6 +5,7 @@ package isle.susisu.twitter.api
 	
 	import isle.susisu.twitter.TwitterRequest;
 	import isle.susisu.twitter.TwitterTokenSet;
+	import isle.susisu.twitter.utils.encodeText;
 	
 	public function _users_lookup(
 		tokenSet:TwitterTokenSet,
