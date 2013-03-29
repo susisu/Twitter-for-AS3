@@ -1,4 +1,4 @@
-Twitter-for-AS3
+Twitter for AS3
 ===============
 
 TwitterAPIをActionScript3で叩くための何かです。
