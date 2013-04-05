@@ -10,8 +10,10 @@ package isle.susisu.twitter.api
 		tokenSet:TwitterTokenSet
 	):TwitterRequest
 	{
+		var parameters:Object=new Object();
+		parameters["oauth_callback"]="oob";
 		//make request
-		var request:TwitterRequest=new TwitterRequest(tokenSet,TwitterURL.oauth_REQUEST_TOKEN,URLRequestMethod.GET);
+		var request:TwitterRequest=new TwitterRequest(tokenSet,TwitterURL.oauth_REQUEST_TOKEN,URLRequestMethod.GET,parameters);
 		
 		return request;
 	}
