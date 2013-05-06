@@ -10,7 +10,8 @@ package isle.susisu.twitter.api
 		tokenSet:TwitterTokenSet,
 		userId:String=null,
 		screenName:String=null,
-		cursor:String="-1"
+		cursor:String="-1",
+		count:int=0
 	):TwitterRequest
 	{
 		//parameters
@@ -27,6 +28,10 @@ package isle.susisu.twitter.api
 		if(cursor!="-1")
 		{
 			parameters["cursor"]=cursor;
+		}
+		if(count>0)
+		{
+			parameters["count"]=count.toString();
 		}
 		//make request
 		var request:TwitterRequest=new TwitterRequest(tokenSet,TwitterURL.followers_IDS,URLRequestMethod.GET,parameters);
