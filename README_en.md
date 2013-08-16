@@ -1,8 +1,6 @@
 Twitter for AS3
 ===============
 
-Let you use the Twitter API with ActionScript 3.
-
 #Note
 * This is an unofficial project. Don't ask your questions to the Twitter official.
 * [as3crypto](http://code.google.com/p/as3crypto/) is required.
