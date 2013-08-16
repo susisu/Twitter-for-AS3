@@ -1,5 +1,6 @@
 Twitter for AS3
 ===============
+English: README_en.md
 
 TwitterAPIをActionScript3で叩くための何かです。
 [サーモンとアボカ丼bot](https://twitter.com/salmon_avocadon)で使われています。
