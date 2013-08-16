@@ -27,6 +27,7 @@ open the page in your browser, authorize your application, and get the PIN.
 
 4.
 Get the access token and the access token secret
+
 Let 'pin' be the PIN you've get.
 
     var atRequest:TwitterRequest=twitter.oauth_accessToken(pin);
@@ -36,10 +37,10 @@ After completing this, you can use all the APIs.
 
 5.
 Post a status by way of experiment
- 
+
     twitter.statuses_update("Hello! This is an experiment.");
 
-
+6.
 If you have already get the access token and the access token secret, you can call the constructor with these tokens.
   
     var twitter:Twitter=new Twitter("<consumer key>","<consumer key secret>","<access token>","<access token secret>");
