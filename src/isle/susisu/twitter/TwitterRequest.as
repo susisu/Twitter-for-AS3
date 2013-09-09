@@ -31,19 +31,19 @@ package isle.susisu.twitter
 		private var _response:String;
 		private var _complete:Boolean;
 		
-		public function TwitterRequest(tokenSet:TwitterTokenSet,url:String,method:String="GET",data:Object=null)
+		public function TwitterRequest(tokenSet:TwitterTokenSet, url:String, method:String = "GET", data:Object = null)
 		{
-			_tokenSet=tokenSet;
-			_url=url;
-			_method=method;
-			_data=data;
-			_response="";
-			_complete=false;
+			_tokenSet = tokenSet;
+			_url = url;
+			_method = method;
+			_data = data;
+			_response = "";
+			_complete = false;
 			
-			_urlRequest=new URLRequest(_url);
-			_urlRequest.method=_method;
+			_urlRequest = new URLRequest(_url);
+			_urlRequest.method = _method;
 			
-			_urlLoader=new URLLoader();
+			_urlLoader = new URLLoader();
 			addListeners();
 		}
 		
@@ -83,53 +83,53 @@ package isle.susisu.twitter
 		
 		public function send():void
 		{
-			_response="";
-			_complete=false;
+			_response = "";
+			_complete = false;
 			
 			var parameters:Object;
 			var query:String;
 			var base:String;
 			var signature:String;
 			
-			if(_method.toUpperCase()=="GET")
+			if(_method.toUpperCase() == "GET")
 			{
-				parameters=mergeObjects(_data,getOAuthParameters(_tokenSet));
+				parameters = mergeObjects(_data,getOAuthParameters(_tokenSet));
 				//convert to query
-				query=objectToSortedQueryString(parameters);
+				query = objectToSortedQueryString(parameters);
 				//base to make signature
-				base=_method.toUpperCase()+"&"+encodeURIComponent(_url)+"&"+encodeURIComponent(query);
+				base = _method.toUpperCase() + "&" + encodeURIComponent(_url) + "&" + encodeURIComponent(query);
 				//make signature
-				signature=encodeURIComponent(makeOAuthSignature(_tokenSet,base));
+				signature = encodeURIComponent(makeOAuthSignature(_tokenSet, base));
 				
-				_urlRequest.data=query+"&oauth_signature="+signature;
-				_urlRequest.requestHeaders=[];
-				_urlRequest.contentType="application/x-www-form-urlencoded";
+				_urlRequest.data = query + "&oauth_signature=" + signature;
+				_urlRequest.requestHeaders = [];
+				_urlRequest.contentType = "application/x-www-form-urlencoded";
 			}
 			else
 			{
-				var oauthParameters:Object=getOAuthParameters(_tokenSet);
+				var oauthParameters:Object = getOAuthParameters(_tokenSet);
 				if(_data is MultipartFormData)
 				{
-					query=objectToSortedQueryString(oauthParameters);
-					base=_method.toUpperCase()+"&"+encodeURIComponent(_url)+"&"+encodeURIComponent(query);
-					signature=encodeURIComponent(makeOAuthSignature(_tokenSet,base));
-					oauthParameters["oauth_signature"]=signature;
+					query = objectToSortedQueryString(oauthParameters);
+					base = _method.toUpperCase() + "&" + encodeURIComponent(_url) + "&" + encodeURIComponent(query);
+					signature = encodeURIComponent(makeOAuthSignature(_tokenSet, base));
+					oauthParameters["oauth_signature"] = signature;
 					
-					_urlRequest.data=_data.getByteArray();
-					_urlRequest.requestHeaders=[makeAuthorizationHeader(oauthParameters)];
-					_urlRequest.contentType="multipart/form-data, boundary="+_data.boundary;
+					_urlRequest.data = _data.getByteArray();
+					_urlRequest.requestHeaders = [makeAuthorizationHeader(oauthParameters)];
+					_urlRequest.contentType = "multipart/form-data, boundary=" + _data.boundary;
 				}
 				else
 				{
-					parameters=mergeObjects(_data,oauthParameters);
-					query=objectToSortedQueryString(parameters);
-					base=_method.toUpperCase()+"&"+encodeURIComponent(_url)+"&"+encodeURIComponent(query);
-					signature=encodeURIComponent(makeOAuthSignature(_tokenSet,base));
-					oauthParameters["oauth_signature"]=signature;
+					parameters = mergeObjects(_data, oauthParameters);
+					query = objectToSortedQueryString(parameters);
+					base = _method.toUpperCase() + "&" + encodeURIComponent(_url) + "&" + encodeURIComponent(query);
+					signature = encodeURIComponent(makeOAuthSignature(_tokenSet, base));
+					oauthParameters["oauth_signature"] = signature;
 					
-					_urlRequest.data=objectToSortedQueryString(_data);
-					_urlRequest.requestHeaders=[makeAuthorizationHeader(oauthParameters)];
-					_urlRequest.contentType="application/x-www-form-urlencoded";
+					_urlRequest.data = objectToSortedQueryString(_data);
+					_urlRequest.requestHeaders = [makeAuthorizationHeader(oauthParameters)];
+					_urlRequest.contentType = "application/x-www-form-urlencoded";
 				}
 			}
 			
@@ -138,41 +138,49 @@ package isle.susisu.twitter
 		
 		private function addListeners():void
 		{
-			_urlLoader.addEventListener(Event.COMPLETE,onComplete);
-			_urlLoader.addEventListener(HTTPStatusEvent.HTTP_STATUS,onHTTPStatus);
-			_urlLoader.addEventListener(IOErrorEvent.IO_ERROR,onIOError);
-			_urlLoader.addEventListener(SecurityErrorEvent.SECURITY_ERROR,onSecurityError);
+			_urlLoader.addEventListener(Event.COMPLETE, onComplete);
+			_urlLoader.addEventListener(HTTPStatusEvent.HTTP_STATUS, onHTTPStatus);
+			_urlLoader.addEventListener(IOErrorEvent.IO_ERROR, onIOError);
+			_urlLoader.addEventListener(SecurityErrorEvent.SECURITY_ERROR, onSecurityError);
 		}
 		
 		private function removeListeners():void
 		{
-			_urlLoader.removeEventListener(Event.COMPLETE,onComplete);
-			_urlLoader.removeEventListener(HTTPStatusEvent.HTTP_STATUS,onHTTPStatus);
-			_urlLoader.removeEventListener(IOErrorEvent.IO_ERROR,onIOError);
-			_urlLoader.removeEventListener(SecurityErrorEvent.SECURITY_ERROR,onSecurityError);
+			_urlLoader.removeEventListener(Event.COMPLETE, onComplete);
+			_urlLoader.removeEventListener(HTTPStatusEvent.HTTP_STATUS, onHTTPStatus);
+			_urlLoader.removeEventListener(IOErrorEvent.IO_ERROR, onIOError);
+			_urlLoader.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, onSecurityError);
 		}
 		
 		private function onComplete(e:Event):void
 		{
 			removeListeners();
 			
-			_response=_urlLoader.data.toString();
-			_complete=true;
+			_response = _urlLoader.data.toString();
+			_complete = true;
 			
 			dispatchEvent(new TwitterRequestEvent(TwitterRequestEvent.COMPLETE));
 		}
 		
 		private function onHTTPStatus(e:HTTPStatusEvent):void
 		{
-			_complete=true;
-			
-			if(e.status>=400 && e.status<500)
+			if(e.status >= 400 && e.status < 500)
 			{
-				dispatchEvent(new TwitterErrorEvent(TwitterErrorEvent.CLIENT_ERROR,false,false,e.status));
+				if(!dispatchEvent(new TwitterErrorEvent(TwitterErrorEvent.CLIENT_ERROR, false, true, e.status)))
+				{
+					_complete=true;
+				}
 			}
-			else if(e.status>=500)
+			else if(e.status >= 500)
 			{
-				dispatchEvent(new TwitterErrorEvent(TwitterErrorEvent.SERVER_ERROR,false,false,e.status));
+				if(!dispatchEvent(new TwitterErrorEvent(TwitterErrorEvent.SERVER_ERROR, false, true, e.status)))
+				{
+					_complete = true;
+				}
+			}
+			else
+			{
+				_complete=true;
 			}
 		}
 		
@@ -181,7 +189,7 @@ package isle.susisu.twitter
 			if(!_complete)
 			{
 				removeListeners();
-				_complete=true;
+				_complete = true;
 				
 				dispatchEvent(e);
 			}
@@ -190,7 +198,7 @@ package isle.susisu.twitter
 		private function onSecurityError(e:SecurityErrorEvent):void
 		{
 			removeListeners();
-			_complete=true;
+			_complete = true;
 			
 			dispatchEvent(e);
 		}
