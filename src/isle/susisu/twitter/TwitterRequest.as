@@ -28,19 +28,21 @@ package isle.susisu.twitter
 		private var _url:String;
 		private var _method:String;
 		private var _data:Object;
+		private var _proxy:String;
 		private var _response:String;
 		private var _complete:Boolean;
 		
-		public function TwitterRequest(tokenSet:TwitterTokenSet, url:String, method:String = "GET", data:Object = null)
+		public function TwitterRequest(tokenSet:TwitterTokenSet, url:String, method:String = "GET", data:Object = null, proxy:String = null)
 		{
 			_tokenSet = tokenSet;
 			_url = url;
 			_method = method;
 			_data = data;
+			_proxy = proxy;
 			_response = "";
 			_complete = false;
 			
-			_urlRequest = new URLRequest(_url);
+			_urlRequest = new URLRequest();
 			_urlRequest.method = _method;
 			
 			_urlLoader = new URLLoader();
@@ -71,6 +73,15 @@ package isle.susisu.twitter
 			return _data;
 		}
 		
+		public function get proxy():String
+		{
+			return _proxy;
+		}
+		public function set proxy(value:String):void
+		{
+			_proxy = value;
+		}
+		
 		public function get response():String
 		{
 			return _response;
@@ -93,6 +104,14 @@ package isle.susisu.twitter
 			
 			if(_method.toUpperCase() == "GET")
 			{
+				if(_proxy == null)
+				{
+					_urlRequest.url = _url;
+				}
+				else
+				{
+					_urlRequest.url = _proxy;
+				}
 				parameters = mergeObjects(_data,getOAuthParameters(_tokenSet));
 				//convert to query
 				query = objectToSortedQueryString(parameters);
@@ -101,12 +120,13 @@ package isle.susisu.twitter
 				//make signature
 				signature = encodeURIComponent(makeOAuthSignature(_tokenSet, base));
 				
-				_urlRequest.data = query + "&oauth_signature=" + signature;
+				_urlRequest.data = query + "&oauth_signature=" + signature + (_proxy != null ? "&url=" + _url : "");
 				_urlRequest.requestHeaders = [];
 				_urlRequest.contentType = "application/x-www-form-urlencoded";
 			}
 			else
 			{
+				_urlRequest.url = _url;
 				var oauthParameters:Object = getOAuthParameters(_tokenSet);
 				if(_data is MultipartFormData)
 				{
