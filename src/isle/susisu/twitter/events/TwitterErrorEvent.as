@@ -21,7 +21,7 @@ package isle.susisu.twitter.events{
 		}
 		
 		override public function toString():String{
-			return formatToString("TwitterStreamEvent","type","bubbles","cancelable","statusCode","message");
+			return formatToString("TwitterErrorEvent","type","bubbles","cancelable","statusCode","message");
 		}
 		
 	}
