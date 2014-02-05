@@ -24,7 +24,7 @@ package isle.susisu.twitter.api
 		}
 		if(page>0)
 		{
-			parameters["page"]=page.toString
+			parameters["page"]=page.toString();
 		}
 		parameters["include_entities"]=includeEntities?TRUE:FALSE;
 		//make request
