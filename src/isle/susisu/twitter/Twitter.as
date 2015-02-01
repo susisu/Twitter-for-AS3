@@ -873,9 +873,9 @@ package isle.susisu.twitter
 			return request;
 		}
 		
-		public function oauth_requestToken(sendImmediate:Boolean = true):TwitterRequest
+		public function oauth_requestToken(oauth_callback:String="oob", sendImmediate:Boolean = true):TwitterRequest
 		{
-			var request:TwitterRequest = _oauth_requestToken(_defaultTokenSet);
+			var request:TwitterRequest = _oauth_requestToken(_defaultTokenSet, oauth_callback);
 			request.proxy = _proxy;
 			
 			function onComplete(e:TwitterRequestEvent):void

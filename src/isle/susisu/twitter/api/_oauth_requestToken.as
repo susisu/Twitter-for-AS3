@@ -7,11 +7,12 @@ package isle.susisu.twitter.api
 	import isle.susisu.twitter.TwitterTokenSet;
 	
 	public function _oauth_requestToken(
-		tokenSet:TwitterTokenSet
+		tokenSet:TwitterTokenSet,
+		oauth_callback:String="oob"
 	):TwitterRequest
 	{
 		var parameters:Object=new Object();
-		parameters["oauth_callback"]="oob";
+		parameters["oauth_callback"]=oauth_callback;
 		//make request
 		var request:TwitterRequest=new TwitterRequest(tokenSet,TwitterURL.oauth_REQUEST_TOKEN,URLRequestMethod.GET,parameters);
 		
