@@ -157,6 +157,8 @@ package
             (event.target as TwitterRequest).removeEventListener(TwitterErrorEvent.SERVER_ERROR, onOAuthRequestTokenError);
 
             this.outputConsole.appendText("Error: " + event.statusCode.toString() + "\n");
+
+            event.preventDefault();
         }
 
         // When the "access token" button is clicked
@@ -194,6 +196,8 @@ package
             (event.target as TwitterRequest).removeEventListener(TwitterErrorEvent.SERVER_ERROR, onOAuthAccessTokenError);
 
             this.outputConsole.appendText("Error: " + event.statusCode.toString() + "\n");
+
+            event.preventDefault();
         }
 
         // When the tweet button is clicked
@@ -229,6 +233,8 @@ package
             (event.target as TwitterRequest).removeEventListener(TwitterErrorEvent.SERVER_ERROR, onStatusesUpdateError);
             
             this.outputConsole.appendText("Error: " + event.statusCode.toString() + "\n");
+
+            event.preventDefault();
         }
     
     }
