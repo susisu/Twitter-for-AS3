@@ -1,65 +1,99 @@
 Twitter for AS3
 ===============
+Action Script 3 library for Twitter API v1.1
 
-#Note
-* This is an unofficial project. Don't ask your questions to the Twitter official.
-* [as3crypto](http://code.google.com/p/as3crypto/) is required.
+This is an *unofficial* project. Don't ask your question to the Twitter official.
 
-#First steps
+# Requirements
+* [as3crypto](http://code.google.com/p/as3crypto/)
+
+# Usage
+## First steps
+If you are not used to dealing with Twitter authentication and APIs, it may help you reading the [documentation](https://dev.twitter.com/overview/documentation) of Twitter.
+
 1.
-Login to https://dev.twitter.com/ with your twitter account, create your application, and get the consumer key and the consumer key secret.
+Get the consumer key and the consumer secret for your application.
+
+Please login to https://dev.twitter.com/ with your twitter account and create or select your application.
+You can get the keys from "Keys and Access Tokens" tab of the your app's page.
 
 2.
-Make an instance of Twitter
+Create an instance of `Twitter` class.
 
-    var twitter:Twitter = new Twitter(<your consumer key>, <your consumer key secret>);
+*If you already have access tokens, please go to 6*.
+
+Specify your keys to its arguments.
+``` actionscript
+var twitter:Twitter = new Twitter(<your consumer key>, <your consumer secret>);
+```
 
 3.
-Get the request token and the request token secret
+Get the request token and the request token secret.
 
-    var rtRequest:TwitterRequest = twitter.oauth_requestToken();
+First, send a request by `twitter.oauth_requestToken()`
+``` actionscript
+var rtRequest:TwitterRequest = twitter.oauth_requestToken();
+```
+and add an event listener for `TwitterRequestEvent.COMPLETE` to `rtRequest`.
+``` actionscript
+rtRequest.addEventListener(TwitterRequestEvent.COMPLETE, <listener>);
+```
 
-You should add an event listener of TwitterRequestEvent.COMPLETE to rtRequest.  
-After completing this, get the URL of authorization page with twitter.getOAuthAuthorizeURL(),
-open the page in your browser, authorize your application, and get the PIN.
+As the request is complete, you can get the URL to authenticate the app on your account by
+``` actionscript
+twitter.getOAuthAuthorizeURL();
+```
+and open the URL in your browser.
+
+After authentication you get a PIN, that is used in the next step.
 
 4.
-Get the access token and the access token secret
+Get the access token and the access token secret.
 
-Let 'pin' be the PIN you've get.
+Let `pin` be the PIN you've get, send a request by `twitter.oauth_accessToken()`
+``` actionscript
+var atRequest:TwitterRequest = twitter.oauth_accessToken(pin);
+```
+and also add an event listener for `TwitterRequestEvent.COMPLETE` to `atRequest`.
+``` actionscript
+atRequest.addEventListener(TwitterRequestEvent.COMPLETE, <listener>);
+```
 
-    var atRequest:TwitterRequest = twitter.oauth_accessToken(pin);
-
-You should also add an event listener of TwitterRequestEvent.COMPLETE to atRequest. 
-After completing this, you can use all the APIs.
+If it's complete, you are ready to use the REST APIs.
 
 5.
-Post a status by way of experiment
+For a test, try to post a tweet.
 
-    twitter.statuses_update("Hello!");
+``` actionscript
+twitter.statuses_update("Hello!");
+```
 
 6.
-If you have already get the access token and the access token secret, you can call the constructor with these tokens.
-  
-    var twitter:Twitter = new Twitter(<consumer key>, <consumer key secret>, <access token>, <access token secret>);
+If you already have the access token and the access token secret, you can sepcify them when you create an `Twitter` instance.
+``` actionscript
+var twitter:Twitter = new Twitter(<consumer key>, <consumer secret>, <access token>, <access token secret>);
+```
+Then you can use the REST APIs immediately.
 
-Then you can use all the APIs immediately, without the complicated process I've mentioned above.
+## Error handling
+To handle errors, add an event listener for `TwitterErrorEvent` to the request.
+This is an example for handling client errors (HTTP 4xx), and you can also handle server errors (HTTP 5xx) with `TwitterErrorEvent.SERVER_ERROR` in the same way.
+``` actionscript
+var request:TwitterRequest = twitter.statuses_update(...);
+request.addEventListener(TwitterErrorEvent.CLIENT_ERROR,
+    function(event:TwitterErrorEvent):void
+    {
+        /* error handling code here */
+        event.preventDefault();
+    }
+);
+```
 
-Please see also: https://dev.twitter.com/docs/api/1.1
+# Example
+An example app is in `example` directory.
 
+# License
+The MIT License
 
-#Error handling
-To handle errors, add some event listener for TwitterErrorEvent to the request.
-
-	var request:TwitterRequest = twitter.statuses_update(...);
-	request.addEventListener(TwitterErrorEvent.CLIENT_ERROR,
-		function(event:TwitterErrorEvent):void
-		{
-			/*
-				error handling
-			*/
-			event.preventDefault();
-		});
-
-This is an example for client error (HTTP 4xx).
-You can also handle server errors (HTTP 5xx) with TwitterErrorEvent.SERVER_ERROR the same way.
+# Author
+Susisu ([Twitter](https://twitter.com/susisu2413), [GitHub](https://github.com/susisu))
