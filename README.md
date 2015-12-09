@@ -1,6 +1,6 @@
 Twitter for AS3
 ===============
-Action Script 3 library for Twitter API v1.1
+ActionScript 3 library for Twitter API v1.1
 
 This is an *unofficial* project. Don't ask your question to the Twitter official.
 
